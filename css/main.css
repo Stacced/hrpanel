@@ -1,0 +1,13 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/* HEADER */
+
+header {
+    height: 120px;
+    background-color: lightgrey;
+}
+
+/* END HEADER */
