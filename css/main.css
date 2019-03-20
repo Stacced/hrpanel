@@ -1,13 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 * {
     padding: 0;
     margin: 0;
+    font-family: Montserrat, sans-serif;
 }
 
-/* HEADER */
-
-header {
-    height: 120px;
-    background-color: lightgrey;
+html, body {
+    height: 100%;
 }
 
-/* END HEADER */
+body {
+    background-image: url("../img/bg.png");
+}
+
+.navbar {
+    min-height: 100px;
+    font-size: 25pt;
+}
+
+.navbar-brand {
+    font-size: 25pt !important;
+}
+
+#middleWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 100px);
+}
+
+#form-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#form-box h2 {
+    color: black;
+    font-weight: bolder;
+    text-align: center;
+}
