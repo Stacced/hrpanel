@@ -7,14 +7,13 @@ if (empty($_SESSION['loggedin'])) {
     header("Location: index.php");
     die();
 }
-
 ?>
 <!DOCTYPE HTML>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>HR Panel - Home</title>
+    <title>HR Panel - Utilisateurs</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -29,10 +28,10 @@ if (empty($_SESSION['loggedin'])) {
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="home.php">Panel</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="users.php">Utilisateurs</a>
                 </li>
                 <li class="nav-item">

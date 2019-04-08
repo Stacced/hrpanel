@@ -1,16 +1,17 @@
 <?php
+// Starting session
 session_start();
 
-if (isset($_SESSION['loggedin'])) {
-    header("Location: home.php");
-    die();
-}
-
+// Parsing database configuration & defining passed params
 $dbconf = parse_ini_file('dbsettings.ini');
 $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
 $pwd = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 $err = false;
 
+// Provide email to index.php
+$_SESSION['emailTry'] = $email;
+
+// Email & password check
 if (!empty($email) || !empty($pwd)) {
     if (empty($email)) {
         echo <<<EOF
@@ -21,7 +22,6 @@ if (!empty($email) || !empty($pwd)) {
     </button>
 </div>
 EOF;
-        $err = true;
     }
 
     if (empty($pwd)) {
@@ -39,11 +39,19 @@ EOF;
     $err = true;
 }
 
+// Create PDO if no errors
 if (!$err) {
     try {
         $pdo = new PDO("mysql:dbname=" . $dbconf['dbname'] . ";host=" . $dbconf['hostname'] . ";charset=utf8", $dbconf['username'], $dbconf['password']);
     } catch (PDOException $e) {
-        echo $e->getMessage();
+        echo <<<EOF
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Erreur !</strong> Connexion à la base de données impossible
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+EOF;
         die();
     }
 
@@ -52,9 +60,9 @@ if (!$err) {
     $userData = $pdoStatement->fetch(PDO::FETCH_ASSOC);
 
     if (!empty($userData) && $pdoStatement->rowCount() == 1) {
-        header("Location: home.php");
         $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = $userData['email'];
+        $_SESSION['email'] = $userData['email'];
+        echo "ok";
     } else {
         echo <<<EOF
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -64,23 +72,6 @@ if (!$err) {
     </button>
 </div>
 EOF;
+        die();
     }
 }
-?>
-
-<div id="form-box">
-    <h2>Login</h2>
-    <form action="" method="POST">
-        <div class="form-group">
-            <label for="idEmailInput">Adresse email</label>
-            <input type="email" name="email" class="form-control" id="idEmailInput" placeholder="Entrez votre email"
-                   required value="<?= $email ?>">
-        </div>
-        <div class="form-group">
-            <label for="idPasswordInput">Mot de passe</label>
-            <input type="password" name="password" class="form-control" id="idPasswordInput"
-                   placeholder="Entrez votre mot de passe" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Se connecter</button>
-    </form>
-</div>
