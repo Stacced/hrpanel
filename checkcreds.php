@@ -1,8 +1,8 @@
 <?php
-// Starting session
+// Start session
 session_start();
 
-// Parsing database configuration & defining passed params
+// Parse database configuration & define passed params
 $dbconf = parse_ini_file('dbsettings.ini');
 $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
 $pwd = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
@@ -62,7 +62,7 @@ EOF;
 
     // Found the user
     /*
-     * permLevel : 1 => USER ; 2 => MODERATOR ; 3 => HR ADMIN
+     * permLevel : 1 => USER ; 2 => HR MODERATOR ; 3 => HR ADMIN
      */
     if (!empty($userData) && $pdoStatement->rowCount() == 1) {
         $_SESSION['loggedin'] = true;
