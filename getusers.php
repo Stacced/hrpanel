@@ -4,7 +4,7 @@ $dbconf = parse_ini_file('dbsettings.ini');
 
 try {
     // Database connection
-    $pdo = new PDO("mysql:dbnam=" . $dbconf['dbname'] . ";host=" . $dbconf['hostname'] . ";charset=utf8", $dbconf['username'], $dbconf['password']);
+    $pdo = new PDO("mysql:dbname=" . $dbconf['dbname'] . ";host=" . $dbconf['hostname'] . ";charset=utf8", $dbconf['username'], $dbconf['password']);
 
     // Get users in array of arrays
     $users = $pdo->query("SELECT * FROM users")->fetchAll(PDO::FETCH_ASSOC);
