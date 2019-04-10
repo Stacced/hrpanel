@@ -41,3 +41,16 @@ body {
     font-weight: bolder;
     text-align: center;
 }
+
+#idUsersTable {
+    background-color: white;
+    width: 90%;
+    margin: 50px auto;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+#idUsersTable th, tr, td {
+    padding: 10px;
+}

@@ -15,7 +15,7 @@ $_SESSION['emailTry'] = $email;
 if (!empty($email) || !empty($pwd)) {
     if (empty($email)) {
         echo <<<EOF
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="idAlert">
     <strong>Erreur !</strong> Email non renseigné !
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -26,7 +26,7 @@ EOF;
 
     if (empty($pwd)) {
         echo <<<EOF
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="idAlert">
     <strong>Erreur !</strong> Mot de passe non renseigné !
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -45,7 +45,7 @@ if (!$err) {
         $pdo = new PDO("mysql:dbname=" . $dbconf['dbname'] . ";host=" . $dbconf['hostname'] . ";charset=utf8", $dbconf['username'], $dbconf['password']);
     } catch (PDOException $e) {
         echo <<<EOF
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="idAlert">
     <strong>Erreur !</strong> Connexion à la base de données impossible
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -55,17 +55,26 @@ EOF;
         die();
     }
 
+    // Request user data
     $hashedPwd = strtoupper(hash('sha256', $pwd));
-    $pdoStatement = $pdo->query("SELECT email, password FROM users WHERE email = '$email' AND password = '$hashedPwd'");
+    $pdoStatement = $pdo->query("SELECT * FROM users WHERE email = '$email' AND password = '$hashedPwd'");
     $userData = $pdoStatement->fetch(PDO::FETCH_ASSOC);
 
+    // Found the user
+    /*
+     * permLevel : 1 => USER ; 2 => MODERATOR ; 3 => HR ADMIN
+     */
     if (!empty($userData) && $pdoStatement->rowCount() == 1) {
         $_SESSION['loggedin'] = true;
         $_SESSION['email'] = $userData['email'];
+        $_SESSION['permLevel'] = $userData['permLevel'];
+        $_SESSION['lastLogin'] = $userData['lastLogin'];
+        $timestamp = date('Y-m-d G:i:s');
+        $query = $pdo->exec("UPDATE users SET lastLogin = '$timestamp' WHERE idUser = " . $userData['idUser'] . ";");
         echo "ok";
     } else {
         echo <<<EOF
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="idAlert">
     <strong>Erreur !</strong> Adresse email ou mot de passe incorrect
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
