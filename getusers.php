@@ -9,20 +9,7 @@ try {
     // Get users in array of arrays
     $users = $pdo->query("SELECT * FROM users")->fetchAll(PDO::FETCH_ASSOC);
 
-    // Convert enum value to text /
-    foreach ($users as &$user) {
-        switch ($user['permLevel']) {
-            case '1':
-                $user['permLevel'] = "Utilisateur";
-                break;
-            case '2':
-                $user['permLevel'] = "HR Mod";
-                break;
-            case '3':
-                $user['permLevel'] = "HR Admin";
-                break;
-        }
-    }
+    // Encode data in JSON
     echo json_encode($users);
 } catch (PDOException $e) {
     echo <<<EOF

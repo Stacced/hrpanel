@@ -42,9 +42,17 @@ body {
     text-align: center;
 }
 
-#idUsersTable {
-    background-color: white;
+#usersWrapper {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
     width: 90%;
+    margin: 0 auto;
+}
+
+#idUsersTable, #usersEdit {
+    background-color: white;
+    width: 45%;
     margin: 50px auto;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -53,4 +61,8 @@ body {
 
 #idUsersTable th, tr, td {
     padding: 10px;
+}
+
+#idEditHeader {
+    padding: 5px;
 }
