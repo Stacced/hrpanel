@@ -83,7 +83,7 @@ if (empty($_SESSION['loggedin'])) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" >Non, annuler</button>
-                    <button type="button" class="btn btn-success" id="idSaveEdit">Oui</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" id="idSaveEdit">Oui</button>
                 </div>
             </div>
         </div>

@@ -4,8 +4,8 @@ session_start();
 
 // Parse database configuration & define passed params
 $dbconf = parse_ini_file('dbsettings.ini');
-$email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
-$pwd = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+$pwd = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 $err = false;
 
 // Provide email to index.php
@@ -42,7 +42,7 @@ EOF;
 // Create PDO if no errors
 if (!$err) {
     try {
-        $pdo = new PDO("mysql:dbname=" . $dbconf['dbname'] . ";host=" . $dbconf['hostname'] . ";charset=utf8", $dbconf['username'], $dbconf['password']);
+        $pdo = new PDO('mysql:dbname=' . $dbconf['dbname'] . ';host=' . $dbconf['hostname'] . ';charset=utf8', $dbconf['username'], $dbconf['password']);
     } catch (PDOException $e) {
         echo <<<EOF
 <div class="alert alert-danger alert-dismissible fade show" role="alert" id="idAlert">
@@ -64,14 +64,14 @@ EOF;
     /*
      * permLevel : 1 => USER ; 2 => HR MODERATOR ; 3 => HR ADMIN
      */
-    if (!empty($userData) && $pdoStatement->rowCount() == 1) {
+    if (!empty($userData) && $pdoStatement->rowCount() === 1) {
         $_SESSION['loggedin'] = true;
         $_SESSION['email'] = $userData['email'];
         $_SESSION['permLevel'] = $userData['permLevel'];
         $_SESSION['lastLogin'] = $userData['lastLogin'];
         $timestamp = date('Y-m-d G:i:s');
-        $query = $pdo->exec("UPDATE users SET lastLogin = '$timestamp' WHERE idUser = " . $userData['idUser'] . ";");
-        echo "ok";
+        $query = $pdo->exec("UPDATE users SET lastLogin = '$timestamp' WHERE idUser = " . $userData['idUser'] . ';');
+        echo 'ok';
     } else {
         echo <<<EOF
 <div class="alert alert-danger alert-dismissible fade show" role="alert" id="idAlert">

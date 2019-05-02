@@ -92,8 +92,22 @@ function saveEdit(userId, email, password, permlevel) {
     $.post({
         url: 'saveuser.php',
         data: {userId: userId, email: email, password: password, permlevel: permlevel },
-        success: function() {
-
+        success: function(html) {
+            if (html === 'ok') {
+                document.getElementById("usersEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-success alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
+                    "  <strong>Modifications enregistrées !</strong>" +
+                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                    "    <span aria-hidden=\"true\">&times;</span>\n" +
+                    "  </button>\n" +
+                    "</div>");
+            } else {
+                document.getElementById("usersEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
+                    "  <strong>Erreur lors de la modification !</strong>" +
+                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                    "    <span aria-hidden=\"true\">&times;</span>\n" +
+                    "  </button>\n" +
+                    "</div>");
+            }
         }
     });
 }
@@ -103,4 +117,4 @@ function loadData(id) {
     $("#idUserId").val(users[id]['idUser']);
     $("#idEmailEditInput").val(users[id]['email']);
     $("#idPermEdit").val(users[id]['permLevel']);
-};
+}

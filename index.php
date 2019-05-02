@@ -3,7 +3,7 @@
 session_start();
 
 // Define $email for variable value
-$email = isset($_SESSION['emailTry']) ? $_SESSION['emailTry'] : "";
+$email = isset($_SESSION['emailTry']) ? $_SESSION['emailTry'] : '';
 ?>
 <!DOCTYPE HTML>
 <html lang="fr">
