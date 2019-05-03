@@ -6,6 +6,7 @@ USERS PAGE FUNCTIONS
  */
 
 let users = [];
+let formMode = ''; // add or edit
 
 // Get list of users
 $(document).ready(function () {
@@ -50,7 +51,7 @@ $(document).ready(function () {
 
                 // Edit button
                 let editButton = document.createElement("td");
-                editButton.innerHTML = "<button type=\"button\" class=\"btn btn-warning\" onclick=\"loadData(" + user['idUser'] + ")\">Edit</button>";
+                editButton.innerHTML = "<button type=\"button\" class=\"btn btn-warning editbtn\" onclick=\"loadData(" + user['idUser'] + ")\">Edit</button>";
 
                 // Append columns to row
                 userTr.appendChild(userId);
@@ -73,48 +74,64 @@ function validateEdit() {
     let editedPassword = $("#idPasswordEditInput").val();
     let editedPerm = $("#idPermEdit").children("option:selected").val();
 
-    if (editedEmail === users[editedUserId]['email'] && editedPerm === users[editedUserId]['permLevel'] && (!editedPassword || editedPassword.length === 0)) {
-        document.getElementById("usersEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
-            "  <strong>Aucune modification n'a été effectuée !</strong>" +
-            "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
-            "    <span aria-hidden=\"true\">&times;</span>\n" +
-            "  </button>\n" +
-            "</div>");
+    if (formMode === 'edit') {
+        if (editedEmail === users[editedUserId]['email'] && editedPerm === users[editedUserId]['permLevel'] && (!editedPassword || editedPassword.length === 0)) {
+            addAlert("Aucune modification n'a été effectuée !", 'warning');
+        } else {
+            $("#modalSaveEdit").modal();
+            $("#idSaveEdit").on("click", function(e) {
+                saveEdit(editedUserId, editedEmail, editedPassword, editedPerm, 'edit');
+            })
+        }
     } else {
-        $("#modalSaveEdit").modal();
-        $("#idSaveEdit").on("click", function(e) {
-            saveEdit(editedUserId, editedEmail, editedPassword, editedPerm);
-        })
+        if (/^\s+$/.test(editedEmail) || /^\s+$/.test(editedPassword)) {
+            addAlert("Vous devez renseigner tous les champs !", 'warning');
+        } else {
+            $("#modalSaveEdit").modal();
+            $("#idSaveEdit").on("click", function(e) {
+                saveEdit(editedUserId, editedEmail, editedPassword, editedPerm, 'add');
+            })
+        }
     }
 }
 
-function saveEdit(userId, email, password, permlevel) {
+function saveEdit(userId, email, password, permlevel, formMode) {
     $.post({
         url: 'saveuser.php',
-        data: {userId: userId, email: email, password: password, permlevel: permlevel },
+        data: {userId: userId, email: email, password: password, permlevel: permlevel, formMode: formMode },
         success: function(html) {
             if (html === 'ok') {
-                document.getElementById("usersEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-success alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
-                    "  <strong>Modifications enregistrées !</strong>" +
-                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
-                    "    <span aria-hidden=\"true\">&times;</span>\n" +
-                    "  </button>\n" +
-                    "</div>");
+                addAlert("Modifications enregistrées !", 'success');
             } else {
-                document.getElementById("usersEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
-                    "  <strong>Erreur lors de la modification !</strong>" +
-                    "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
-                    "    <span aria-hidden=\"true\">&times;</span>\n" +
-                    "  </button>\n" +
-                    "</div>");
+                addAlert("Erreur lors de la modification !", 'danger');
             }
         }
     });
 }
 
+function setNewUserTexts() {
+    $('#idEditHeader').html('Création utilisateur');
+    $('#idBtnSaveEdit').html("Créer l'utilisateur");
+    $('#idUserId').val('N/A');
+    $('#idEmailEditInput').val('');
+    $('#idPasswordEditInput').val('');
+    $('#idPermEdit').val('1');
+    formMode = 'add';
+}
+
 function loadData(id) {
     id -= 1;
+    formMode = 'edit';
     $("#idUserId").val(users[id]['idUser']);
     $("#idEmailEditInput").val(users[id]['email']);
     $("#idPermEdit").val(users[id]['permLevel']);
+}
+
+function addAlert(text, type) {
+    document.getElementById("usersEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-" + type +" alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
+        "  <strong>" + text + "</strong>" +
+        "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+        "    <span aria-hidden=\"true\">&times;</span>\n" +
+        "  </button>\n" +
+        "</div>");
 }

@@ -36,11 +36,18 @@ if (empty($_SESSION['loggedin'])) {
         </tr>
         </thead>
         <tbody id="idUsersData">
+            <tr>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td><button id="idBtnNewUser" type="button" class="btn btn-primary" onclick="setNewUserTexts()">New</button></td>
+            </tr>
         </tbody>
     </table>
     <div id="usersEdit">
         <form id="form-box">
-            <h2>Modification utilisateur</h2>
+            <h2 id="idEditHeader">Modification utilisateur</h2>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="idEmailEditInput">Adresse email</label>
@@ -65,7 +72,7 @@ if (empty($_SESSION['loggedin'])) {
                     <input type="text" id="idUserId" class="form-control" readonly>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" onclick="validateEdit()">Valider les modifications</button>
+            <button id="idBtnSaveEdit" type="button" class="btn btn-primary" onclick="validateEdit()">Valider les modifications</button>
         </form>
     </div>
 
