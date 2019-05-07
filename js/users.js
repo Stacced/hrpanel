@@ -49,9 +49,13 @@ $(document).ready(function () {
                 let userLastLogin = document.createElement("td");
                 userLastLogin.innerHTML = user['lastLogin'];
 
-                // Edit button
+                // Edit button (only if user is admin, which is assumed by the presence or not of the 'new' button)
                 let editButton = document.createElement("td");
-                editButton.innerHTML = "<button type=\"button\" class=\"btn btn-warning editbtn\" onclick=\"loadData(" + user['idUser'] + ")\">Edit</button>";
+                if ($('#usersEdit').length) {
+                    editButton.innerHTML = "<button type=\"button\" class=\"btn btn-warning editbtn\" onclick=\"loadData(" + user['idUser'] + ")\">Edit</button>";
+                } else {
+                    editButton.innerHTML = "";
+                }
 
                 // Append columns to row
                 userTr.appendChild(userId);
@@ -120,8 +124,12 @@ function setNewUserTexts() {
 }
 
 function loadData(id) {
+    if (formMode !== 'edit') {
+        $('#idEditHeader').html('Modification utilisateur');
+        $('#idBtnSaveEdit').html("Valider les modifications");
+        formMode = 'edit';
+    }
     id -= 1;
-    formMode = 'edit';
     $("#idUserId").val(users[id]['idUser']);
     $("#idEmailEditInput").val(users[id]['email']);
     $("#idPermEdit").val(users[id]['permLevel']);

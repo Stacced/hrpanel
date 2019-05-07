@@ -21,16 +21,16 @@ if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
 <?php
 } else if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 ?>
-            <li class="nav-item <?= $_SESSION['activePage'] == 'home' ? 'active' : '' ?>">
+            <li class="nav-item <?= $_SESSION['activePage'] === 'home' ? 'active' : '' ?>">
                 <a class="nav-link" href="home.php">Panel</a>
             </li>
-            <li class="nav-item <?= $_SESSION['activePage'] == 'users' ? 'active' : '' ?>">
+            <li class="nav-item <?= $_SESSION['activePage'] === 'users' ? 'active' : '' ?>">
                 <a class="nav-link" href="users.php">Utilisateurs</a>
             </li>
-            <li class="nav-item <?= $_SESSION['activePage'] == 'employees' ? 'active' : '' ?>">
+            <li class="nav-item <?= $_SESSION['activePage'] === 'employees' ? 'active' : '' ?>">
                 <a class="nav-link" href="employees.php">Employés</a>
             </li>
-            <li class="nav-item <?= $_SESSION['activePage'] == 'departments' ? 'active' : '' ?>">
+            <li class="nav-item <?= $_SESSION['activePage'] === 'departments' ? 'active' : '' ?>">
                 <a class="nav-link" href="departments.php">Départements</a>
             </li>
         </ul>

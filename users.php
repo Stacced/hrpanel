@@ -5,9 +5,15 @@ session_start();
 // Define active page
 $_SESSION['activePage'] = 'users';
 
+$isAdmin = false;
+// Check if user is admin
+if ($_SESSION['permLevel'] === '3') {
+    $isAdmin = true;
+}
+
 // Check if user is logged in
 if (empty($_SESSION['loggedin'])) {
-    header("Location: index.php");
+    header('Location: index.php');
     die();
 }
 ?>
@@ -41,10 +47,13 @@ if (empty($_SESSION['loggedin'])) {
                 <td>N/A</td>
                 <td>N/A</td>
                 <td>N/A</td>
+                <?php if ($isAdmin) { ?>
                 <td><button id="idBtnNewUser" type="button" class="btn btn-primary" onclick="setNewUserTexts()">New</button></td>
+                <?php } ?>
             </tr>
         </tbody>
     </table>
+    <?php if ($isAdmin) { ?>
     <div id="usersEdit">
         <form id="form-box">
             <h2 id="idEditHeader">Modification utilisateur</h2>
@@ -95,6 +104,7 @@ if (empty($_SESSION['loggedin'])) {
             </div>
         </div>
     </div>
+    <?php } ?>
 </div>
 
 
