@@ -32,8 +32,13 @@ try {
                 $sql = "UPDATE users SET email = '$email', permLevel = '$permlevel' WHERE idUser = '$userId'";
             }
             break;
+        case 'delete':
+            $sql = "DELETE FROM users WHERE idUser = '$userId'";
+            break;
+        default:
+            // should throw exception or return
+            break;
     }
-
 
     if ($pdo->exec($sql)) {
         echo 'ok';

@@ -2,6 +2,11 @@
 // Start session
 session_start();
 
+// Check if user is already logged in
+if (!empty($_SESSION['loggedin'])) {
+    header('Location: home.php');
+}
+
 // Define $email for variable value
 $email = isset($_SESSION['emailTry']) ? $_SESSION['emailTry'] : '';
 ?>

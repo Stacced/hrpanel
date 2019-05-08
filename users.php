@@ -82,6 +82,7 @@ if (empty($_SESSION['loggedin'])) {
                 </div>
             </div>
             <button id="idBtnSaveEdit" type="button" class="btn btn-primary" onclick="validateEdit()">Valider les modifications</button>
+            <button id="idBtnDelete" type="button" class="btn btn-danger" onclick="deleteUser()">Supprimer l'utilisateur</button>
         </form>
     </div>
 

@@ -101,7 +101,7 @@ function validateEdit() {
 
 function saveEdit(userId, email, password, permlevel, formMode) {
     $.post({
-        url: 'saveuser.php',
+        url: 'useredit.php',
         data: {userId: userId, email: email, password: password, permlevel: permlevel, formMode: formMode },
         success: function(html) {
             if (html === 'ok') {
@@ -133,6 +133,14 @@ function loadData(id) {
     $("#idUserId").val(users[id]['idUser']);
     $("#idEmailEditInput").val(users[id]['email']);
     $("#idPermEdit").val(users[id]['permLevel']);
+}
+
+function deleteUser() {
+    $('#modalSaveEdit').modal();
+    $('#idSaveEdit').on('click', () => {
+        let userId = $("#idUserId").val();
+        saveEdit(userId, null, null, null, 'delete');
+    })
 }
 
 function addAlert(text, type) {
