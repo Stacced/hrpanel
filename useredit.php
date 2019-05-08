@@ -9,9 +9,6 @@ $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 $permlevel = filter_input(INPUT_POST, 'permlevel', FILTER_SANITIZE_NUMBER_INT);
 $sqlMode = filter_input(INPUT_POST, 'formMode', FILTER_SANITIZE_STRING);
 
-// Adjust ID to DB
-++$userId;
-
 try {
     // Database connection
     $pdo = new PDO('mysql:dbname=' . $dbconf['dbname'] . ';host=' . $dbconf['hostname'] . ';charset=utf8', $dbconf['username'], $dbconf['password']);
@@ -45,7 +42,7 @@ try {
         die();
     }
 
-    echo 'error during save';
+    echo 'error during save / ' . $sql;
     die();
 } catch (PDOException $e) {
     echo 'error during save';
