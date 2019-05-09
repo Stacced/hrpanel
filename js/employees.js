@@ -1,8 +1,10 @@
 let employees = [];
+let departments = [];
 let formMode = null;
 
 $(document).ready(() => {
     loadEmployees();
+    loadDepartments();
 });
 
 function setNewUserTexts() {
@@ -34,9 +36,13 @@ function loadEmployees() {
                 let employeeId = document.createElement("td");
                 employeeId.innerHTML = employee['idEmployee'];
 
-                // Employee name
-                let employeeName = document.createElement("td");
-                employeeName.innerHTML = employee['firstname'] + employee['lastname'];
+                // Employee firstname
+                let employeeFirstname = document.createElement("td");
+                employeeFirstname.innerHTML = employee['firstname'];
+
+                // Employee lastname
+                let employeeLastname = document.createElement("td");
+                employeeLastname.innerHTML = employee['lastname'];
 
                 // Employee department
                 let employeeDept = document.createElement("td");
@@ -52,7 +58,8 @@ function loadEmployees() {
 
                 // Append columns to row
                 employeeTr.appendChild(employeeId);
-                employeeTr.appendChild(employeeName);
+                employeeTr.appendChild(employeeFirstname);
+                employeeTr.appendChild(employeeLastname);
                 employeeTr.appendChild(employeeDept);
                 employeeTr.appendChild(editButton);
 
@@ -61,4 +68,34 @@ function loadEmployees() {
             })
         }
     })
+}
+
+function loadDepartments() {
+    $.get({
+        url: 'getdepartments.php',
+        data: null,
+        success: (result) => {
+            departments = JSON.parse(result);
+
+            departments.forEach((dept) => {
+                $("#idDeptEdit").append("<option value='" + dept['deptName'] + "'>" + dept['deptName'] + "</option>")
+            })
+        }
+    })
+}
+
+function loadData(id) {
+    if (formMode !== 'edit') {
+        $('#idEditHeader').html('Modification utilisateur');
+        $('#idBtnSaveEdit').html("Valider les modifications");
+        formMode = 'edit';
+    }
+    let employeeIndex = employees.findIndex((element) => { return parseInt(element.idEmployee) === id});
+    $("#idUserId").val(employees[employeeIndex]['idEmployee']);
+    $("#idFirstnameInput").val(employees[employeeIndex]['firstname']);
+    $("#idLastnameInput").val(employees[employeeIndex]['lastname']);
+    $("#idStreetInput").val(employees[employeeIndex]['addrStreet']);
+    $("#idPostalCodeInput").val(employees[employeeIndex]['addrPostalCode']);
+    $("#idCityInput").val(employees[employeeIndex]['addrCity']);
+    $("#idDeptEdit").val(employees[employeeIndex]['deptName']);
 }

@@ -7,10 +7,10 @@ try {
     $pdo = new PDO('mysql:dbname=' . $dbconf['dbname'] . ';host=' . $dbconf['hostname'] . ';charset=utf8', $dbconf['username'], $dbconf['password']);
 
     // Get users in array of arrays
-    $employees = $pdo->query('SELECT * FROM employees NATURAL JOIN departments')->fetchAll(PDO::FETCH_ASSOC);
+    $departments = $pdo->query('SELECT * FROM departments')->fetchAll(PDO::FETCH_ASSOC);
 
     // Encode data in JSON
-    echo json_encode($employees);
+    echo json_encode($departments);
 } catch (PDOException $e) {
     echo <<<EOF
 <div class="alert alert-danger alert-dismissible fade show" role="alert" id="idAlert">

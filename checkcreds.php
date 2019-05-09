@@ -69,7 +69,6 @@ EOF;
         $_SESSION['email'] = $userData['email'];
         $_SESSION['permLevel'] = $userData['permLevel'];
         $_SESSION['lastLogin'] = $userData['lastLogin'];
-        $_SESSION['departments'] = $pdo->query('SELECT * from departments')->fetch(PDO::FETCH_ASSOC);
 
         // Update last login timestamp
         $timestamp = date('Y-m-d G:i:s');
