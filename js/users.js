@@ -44,7 +44,7 @@ function validateEdit() {
 
 function saveEdit(userId, email, password, permlevel, formMode) {
     $.post({
-        url: 'useredit.php',
+        url: 'user-edit.php',
         data: {userId: userId, email: email, password: password, permlevel: permlevel, formMode: formMode },
         success: function(html) {
             if (html === 'ok') {
