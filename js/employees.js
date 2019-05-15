@@ -112,7 +112,7 @@ function loadEmployees() {
             "                <td>N/A</td>\n" +
             "                <td>N/A</td>\n" +
             "                <td>N/A</td>\n" +
-            "                <td><button id=\"idBtnNewUser\" type=\"button\" class=\"btn btn-primary\" onclick=\"setNewEmployeeTexts()\">New</button></td>\n" +
+            "                <td><button id=\"idBtnNewEmployee\" type=\"button\" class=\"btn btn-primary\" onclick=\"setNewEmployeeTexts()\">New</button></td>\n" +
             "            </tr>")
     }
 

@@ -44,7 +44,7 @@ if (empty($_SESSION['loggedin'])) {
             <td>N/A</td>
             <td>N/A</td>
             <?php if ($isMod) { ?>
-                <td><button id="idBtnNewUser" type="button" class="btn btn-primary" onclick="setNewUserTexts()">New</button></td>
+                <td><button id="idBtnNewEmployee" type="button" class="btn btn-primary" onclick="setNewUserTexts()">New</button></td>
             <?php } ?>
         </tr>
         </tbody>

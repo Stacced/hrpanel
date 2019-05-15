@@ -48,7 +48,7 @@ body {
 
 /* USERS / EMPLOYEES */
 
-#usersWrapper, #employeesWrapper {
+#usersWrapper, #employeesWrapper, #departmentsWrapper {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -56,7 +56,7 @@ body {
     margin: 0 auto;
 }
 
-#idUsersTable, #usersEdit, #idEmployeesTable, #employeesEdit {
+#idUsersTable, #usersEdit, #idEmployeesTable, #employeesEdit, #idDepartmentsTable, #departmentsEdit {
     background-color: white;
     width: 45%;
     margin: 50px auto;
@@ -65,7 +65,7 @@ body {
     border-radius: 8px;
 }
 
-#idUsersTable th, #idUsersTable tr, #idUsersTable td, #idEmployeesTable th, #idEmployeesTable tr, #idEmployeesTable td {
+#idUsersTable th, #idUsersTable tr, #idUsersTable td, #idEmployeesTable th, #idEmployeesTable tr, #idEmployeesTable td, #idDepartmentsTable th, #idDepartmentsTable tr, #idDepartmentsTable td {
     padding: 10px;
 }
 
@@ -73,4 +73,4 @@ body {
     padding: 5px;
 }
 
-/* END USERS / EMPLOYEES */
+/* END USERS / EMPLOYEES / DEPARTMENTS */
