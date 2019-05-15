@@ -7,7 +7,8 @@ $(document).ready(() => {
     loadDepartments();
 });
 
-function setNewUserTexts() {
+// Replace edit texts with new employee texts, much fancy
+function setNewEmployeeTexts() {
     $('#idEditHeader').html('Création employé');
     $('#idBtnSaveEdit').html("Créer l'employé");
     $('#idEmployeeId').val('N/A');
@@ -20,6 +21,22 @@ function setNewUserTexts() {
     formMode = 'add';
 }
 
+// Delete selected employee
+function deleteEmployee() {
+    $("#editAlert").alert('close');
+
+    let employeeId = $("#idEmployeeId").val();
+    if (employeeId === "") {
+        addAlert("Suppression impossible, aucun employé sélectionné", "warning");
+    } else {
+        $('#modalSaveEdit').modal();
+        $('#idSaveEdit').on('click', () => {
+            saveEdit(employeeId, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'delete');
+        })
+    }
+}
+
+// Validate edited values of employee and call saveEdit()
 function validateEdit() {
     $("#editAlert").alert('close');
     let employeeId = $("#idEmployeeId").val();
@@ -58,14 +75,21 @@ function validateEdit() {
 }
 
 function saveEdit(id, firstname, lastname, dept, street, postalCode, city, formMode) {
-    let deptId = departments.find((deptElem) => { return deptElem.deptName === dept})['idDept'];
+    let deptId = '0'; // Dummy value for delete mode, otherwise error /!\
+
+    // No need to find the actual dept id if we're deleting
+    if (formMode !== 'delete') {
+        deptId = departments.find((deptElem) => { return deptElem.deptName === dept})['idDept'];
+    }
+
+    // Send data to SQL script
     $.post({
         url: 'employee-edit.php',
         data: {employeeId: id, firstname: firstname, lastname: lastname, dept: deptId, street: street, postalCode: postalCode, city: city, formMode: formMode },
         success: function(html) {
             if (html === 'ok') {
                 addAlert("Modifications enregistrées !", 'success');
-                loadEmployees();
+                loadEmployees(); // Dynamic employees reload
             } else {
                 addAlert("Erreur lors de la modification !", 'danger');
             }
@@ -76,8 +100,9 @@ function saveEdit(id, firstname, lastname, dept, street, postalCode, city, formM
     $('#idSaveEdit').unbind();
 }
 
+// Load employees from database
 function loadEmployees() {
-    let employeesDataSelector = $('#idEmployeesData');
+    let employeesDataSelector = $('#idEmployeesData'); // No duplicated selectors ! yay
     employeesDataSelector.empty();
 
     // Check if new button needs to be added (same as edit)
@@ -87,10 +112,11 @@ function loadEmployees() {
             "                <td>N/A</td>\n" +
             "                <td>N/A</td>\n" +
             "                <td>N/A</td>\n" +
-            "                <td><button id=\"idBtnNewUser\" type=\"button\" class=\"btn btn-primary\" onclick=\"setNewUserTexts()\">New</button></td>\n" +
+            "                <td><button id=\"idBtnNewUser\" type=\"button\" class=\"btn btn-primary\" onclick=\"setNewEmployeeTexts()\">New</button></td>\n" +
             "            </tr>")
     }
 
+    // Get JSON formatted array of employees
     $.get({
         url: 'getemployees.php',
         data: null,
@@ -140,6 +166,7 @@ function loadEmployees() {
     })
 }
 
+// Load departments from database
 function loadDepartments() {
     $.get({
         url: 'getdepartments.php',
@@ -154,14 +181,15 @@ function loadDepartments() {
     })
 }
 
+// Load selected employee data in edit form
 function loadData(id) {
     if (formMode !== 'edit') {
-        $('#idEditHeader').html('Modification utilisateur');
+        $('#idEditHeader').html('Modification employé');
         $('#idBtnSaveEdit').html("Valider les modifications");
         formMode = 'edit';
     }
     let employeeIndex = employees.findIndex((element) => { return parseInt(element.idEmployee) === id});
-    $("#idUserId").val(employees[employeeIndex]['idEmployee']);
+    $("#idEmployeeId").val(employees[employeeIndex]['idEmployee']);
     $("#idFirstnameInput").val(employees[employeeIndex]['firstname']);
     $("#idLastnameInput").val(employees[employeeIndex]['lastname']);
     $("#idStreetInput").val(employees[employeeIndex]['addrStreet']);
@@ -170,6 +198,7 @@ function loadData(id) {
     $("#idDeptEdit").val(employees[employeeIndex]['deptName']);
 }
 
+// Create Bootstrap alert and append it to edit form
 function addAlert(text, type) {
     document.getElementById("employeesEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-" + type +" alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
         "  <strong>" + text + "</strong>" +

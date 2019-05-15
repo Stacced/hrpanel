@@ -43,6 +43,6 @@ try {
     die();
 }
 catch (Exception $e) {
-    echo 'error during save';
+    echo 'error during save ' . $e;
     die();
 }
