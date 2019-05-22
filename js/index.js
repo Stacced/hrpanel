@@ -18,7 +18,7 @@ function checkCredentials() {
         data: {email: email, password: password},
         success: function (result) {
             if (result === "ok") {
-                document.location.assign("home.php");
+                document.location.assign("users.php");
             } else {
                 $('#middleWrapper').prepend(result);
             }

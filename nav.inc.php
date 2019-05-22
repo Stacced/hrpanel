@@ -9,11 +9,11 @@
 <?php
 if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
     ?>
-            <li class="nav-item active">
+            <li class="nav-item <?= $_SESSION['activePage'] === 'login' ? 'active' : '' ?>">
                 <a class="nav-link" href="index.php">Login <span class="sr-only">(actif)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="home.php">Panel</a>
+            <li class="nav-item <?= $_SESSION['activePage'] === 'register' ? 'active' : '' ?>">
+                <a class="nav-link" href="register.php">Register</a>
             </li>
         </ul>
     </div>
@@ -21,9 +21,6 @@ if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
 <?php
 } else if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
 ?>
-            <li class="nav-item <?= $_SESSION['activePage'] === 'home' ? 'active' : '' ?>">
-                <a class="nav-link" href="home.php">Panel</a>
-            </li>
             <li class="nav-item <?= $_SESSION['activePage'] === 'users' ? 'active' : '' ?>">
                 <a class="nav-link" href="users.php">Utilisateurs</a>
             </li>

@@ -2,9 +2,12 @@
 // Start session
 session_start();
 
+// Define active page
+$_SESSION['activePage'] = 'login';
+
 // Check if user is already logged in
 if (!empty($_SESSION['loggedin'])) {
-    header('Location: home.php');
+    header('Location: users.php');
 }
 
 // Define $email for variable value
