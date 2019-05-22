@@ -75,7 +75,7 @@ function validateEdit() {
 }
 
 function saveEdit(id, firstname, lastname, dept, street, postalCode, city, formMode) {
-    let deptId = '0'; // Dummy value for delete mode, otherwise error /!\
+    let deptId = '0'; // Dummy param value for delete mode, otherwise error /!\
 
     // No need to find the actual dept id if we're deleting
     if (formMode !== 'delete') {
@@ -198,7 +198,10 @@ function loadData(id) {
     $("#idDeptEdit").val(employees[employeeIndex]['deptName']);
 }
 
-// Create Bootstrap alert and append it to edit form
+/**
+ * Creates Bootstrap alert and appends it to edit zone.
+ * @return {void} Returns nothing.
+ */
 function addAlert(text, type) {
     document.getElementById("employeesEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-" + type +" alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
         "  <strong>" + text + "</strong>" +

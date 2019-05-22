@@ -1,10 +1,15 @@
 let departments = [];
 let formMode = null;
 
+// Triggered when document finished loading
 $(document).ready(() => {
     loadDepartments();
 });
 
+/**
+ * Sets texts when creating new department.
+ * @return {void} Returns nothing.
+ */
 function setNewDeptTexts() {
     formMode = 'add';
     $('#idBtnSaveEdit').html('Créer le département');
@@ -13,9 +18,12 @@ function setNewDeptTexts() {
     $('#idDeptName').val('');
 }
 
-// Load departments from database
+/**
+ * Gets departments from database and loads it in the table.
+ * @return {void} Returns nothing.
+ */
 function loadDepartments() {
-    let departmentsDataSelector = $('#idDepartmentsData'); // No duplicated selectors ! yay
+    let departmentsDataSelector = $('#idDepartmentsData'); // No duplicated selectors
     departmentsDataSelector.empty();
 
     // Check if new button needs to be added (same as edit)
@@ -27,6 +35,7 @@ function loadDepartments() {
             "            </tr>")
     }
 
+    // Get departments with Ajax request
     $.get({
         url: 'getdepartments.php',
         data: null,
@@ -46,7 +55,7 @@ function loadDepartments() {
                 let deptName = document.createElement('td');
                 deptName.innerHTML = dept['deptName'];
 
-                // Edit button (only if employee is admin, which is assumed by the presence or not of the 'new' button)
+                // Edit button (only if currently logged user is admin, which is assumed by the presence or not of the 'new' button)
                 let editButton = document.createElement("td");
                 if ($('#departmentsEdit').length) {
                     editButton.innerHTML = "<button type=\"button\" class=\"btn btn-warning editbtn\" onclick=\"loadData(" + dept['idDept'] + ")\">Edit</button>";
@@ -66,6 +75,10 @@ function loadDepartments() {
     })
 }
 
+/**
+ * Loads selected department data from departments list.
+ * @return {void} Returns nothing.
+ */
 function loadData(id) {
     if (formMode !== 'edit') {
         $('#idEditHeader').html('Modification département');
@@ -77,6 +90,87 @@ function loadData(id) {
     $("#idDeptName").val(departments[deptIndex]['deptName']);
 }
 
-function deleteDept() {
+/**
+ * Validates modified data, prompts user to proceed and if so, calls saveEdit() to save data.
+ * @return {void} Returns nothing.
+ */
+function validateEdit() {
+    $("#editAlert").alert('close');
+    let deptId = $("#idDeptId").val();
+    let deptName = $("#idDeptName").val();
+    let deptIndex = departments.findIndex((element) => { return element.idDept === deptId });
 
+    if (formMode === 'edit') {
+        if (deptName === departments[deptIndex]['deptName']) {
+            addAlert("Aucune modification n'a été effectuée !", 'warning');
+        } else {
+            $("#modalSaveEdit").modal();
+            $("#idSaveEdit").on("click", () => {
+                saveEdit(deptId, deptName,'edit');
+            });
+        }
+    } else {
+        if (/^\s+$/.test(deptName)) {
+            addAlert("Vous devez renseigner tous les champs !", 'warning');
+        } else {
+            $("#modalSaveEdit").modal();
+            $("#idSaveEdit").on("click", () => {
+                saveEdit(deptId, deptName, 'add');
+            });
+        }
+    }
+}
+
+/**
+ * Queries PHP script with Ajax to save new data to database.
+ * @return {void} Returns nothing.
+ */
+function saveEdit(deptId, deptName, formMode) {
+    // Send data to PHP script
+    $.post({
+        url: 'dept-edit.php',
+        data: {deptId: deptId, deptName: deptName, formMode: formMode },
+        success: function(html) {
+            if (html === 'ok') {
+                addAlert("Modifications enregistrées !", 'success');
+                loadDepartments(); // Dynamic departments list reload
+            } else {
+                addAlert("Erreur lors de la modification !", 'danger');
+            }
+        }
+    });
+
+    // Needed because click event was registered twice.
+    $('#idSaveEdit').unbind();
+}
+
+/**
+ * Deletes currently selected department from database.
+ * @return {void} Returns nothing.
+ */
+function deleteDept() {
+    $("#editAlert").alert('close');
+
+    let deptId = $("#idDeptId").val();
+    if (deptId === "") {
+        addAlert("Suppression impossible, aucun département sélectionné", "warning");
+    } else {
+        $('#modalSaveEdit').modal();
+        $('#idSaveEdit').on('click', () => {
+            saveEdit(deptId, 'N/A', 'delete');
+        })
+    }
+}
+
+/**
+ * Creates Bootstrap alert and appends it to edit zone.
+ * @return {void} Returns nothing.
+ */
+function addAlert(text, type) {
+    document.getElementById("departmentsEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-" + type +" alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
+        "  <strong>" + text + "</strong>" +
+        "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+        "    <span aria-hidden=\"true\">&times;</span>\n" +
+        "  </button>\n" +
+        "</div>");
 }

@@ -13,10 +13,11 @@ $city = filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING);
 $sqlMode = filter_input(INPUT_POST, 'formMode', FILTER_SANITIZE_STRING);
 
 try {
-// Database connection
+    // Database connection
     $pdo = new PDO('mysql:dbname=' . $dbconf['dbname'] . ';host=' . $dbconf['hostname'] . ';charset=utf8', $dbconf['username'], $dbconf['password']);
     $sql = null;
 
+    // Check if POST data is not empty
     if (!empty($firstname) && !empty($lastname) && !empty($dept) && !empty($street) && !empty($postalCode) && !empty($city)) {
         switch ($sqlMode) {
             case 'add':
@@ -33,6 +34,7 @@ try {
                 break;
         }
 
+        // Check if query is successfully executed
         if ($pdo->exec($sql)) {
             echo 'ok';
             die();
