@@ -1,5 +1,5 @@
 <?php
-// Get database configuration
+// Parse database configuration file
 $dbconf = parse_ini_file('dbsettings.ini');
 
 try {

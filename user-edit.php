@@ -1,8 +1,8 @@
 <?php
-// Database configuration file
+// Parse database configuration file
 $dbconf = parse_ini_file('dbsettings.ini');
 
-// POST data
+// Filter POST data
 $userId = filter_input(INPUT_POST, 'userId', FILTER_SANITIZE_NUMBER_INT);
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);

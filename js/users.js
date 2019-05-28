@@ -1,65 +1,23 @@
 /*
-
-USERS PAGE FUNCTIONS
--> Gather user list as soon as document is ready
-
+ *  Author      : Laszlo DINDELEUX / I.FA-P2A
+ *  Project     : hrpanel
+ *  Version     : 1.0.0
+ *  File        : users.js
+ *  Description : Contains required functions for users page
  */
 
 let users = [];
-let formMode = ''; // add or edit
+let formMode = ''; // Used to tell PHP script which type of query it needs to do
 
-// Get list of users
+// Triggered when document finished loading
 $(document).ready(() => {
     loadUsers();
 });
 
-function validateEdit() {
-    $("#editAlert").alert('close');
-    let editedUserId = parseInt($("#idUserId").val());
-    let editedEmail = $("#idEmailEditInput").val();
-    let editedPassword = $("#idPasswordEditInput").val();
-    let editedPerm = $("#idPermEdit").children("option:selected").val();
-    let userIndex = users.findIndex((element) => { return parseInt(element.idUser) === editedUserId});
-
-    if (formMode === 'edit') {
-        if (editedEmail === users[userIndex]['email'] && editedPerm === users[userIndex]['permLevel'] && (!editedPassword || editedPassword.length === 0)) {
-            addAlert("Aucune modification n'a été effectuée !", 'warning');
-        } else {
-            $("#modalSaveEdit").modal();
-            $("#idSaveEdit").on("click", () => {
-                saveEdit(editedUserId, editedEmail, editedPassword, editedPerm, 'edit');
-            });
-        }
-    } else {
-        if (/^\s+$/.test(editedEmail) || /^\s+$/.test(editedPassword)) {
-            addAlert("Vous devez renseigner tous les champs !", 'warning');
-        } else {
-            $("#modalSaveEdit").modal();
-            $("#idSaveEdit").on("click", () => {
-                saveEdit(editedUserId, editedEmail, editedPassword, editedPerm, 'add');
-            });
-        }
-    }
-}
-
-function saveEdit(userId, email, password, permlevel, formMode) {
-    $.post({
-        url: 'user-edit.php',
-        data: {userId: userId, email: email, password: password, permlevel: permlevel, formMode: formMode },
-        success: function(html) {
-            if (html === 'ok') {
-                addAlert("Modifications enregistrées !", 'success');
-                loadUsers();
-            } else {
-                addAlert("Erreur lors de la modification !", 'danger');
-            }
-        }
-    });
-
-    // Needed because click event was registered twice.
-    $('#idSaveEdit').unbind();
-}
-
+/**
+ * Sets texts when creating new user.
+ * @return {void} Returns nothing.
+ */
 function setNewUserTexts() {
     $('#idEditHeader').html('Création utilisateur');
     $('#idBtnSaveEdit').html("Créer l'utilisateur");
@@ -70,41 +28,10 @@ function setNewUserTexts() {
     formMode = 'add';
 }
 
-function loadData(id) {
-    if (formMode !== 'edit') {
-        $('#idEditHeader').html('Modification utilisateur');
-        $('#idBtnSaveEdit').html("Valider les modifications");
-        formMode = 'edit';
-    }
-    let userIndex = users.findIndex((element) => { return parseInt(element.idUser) === id});
-    $("#idUserId").val(users[userIndex]['idUser']);
-    $("#idEmailEditInput").val(users[userIndex]['email']);
-    $("#idPermEdit").val(users[userIndex]['permLevel']);
-}
-
-function deleteUser() {
-    $("#editAlert").alert('close');
-
-    if ($('#idUserId').val() === "") {
-        addAlert("Suppression impossible, aucun utilisateur sélectionné", "warning");
-    } else {
-        $('#modalSaveEdit').modal();
-        $('#idSaveEdit').on('click', () => {
-            let userId = $("#idUserId").val();
-            saveEdit(userId, null, null, null, 'delete');
-        })
-    }
-}
-
-function addAlert(text, type) {
-    document.getElementById("usersEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-" + type +" alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
-        "  <strong>" + text + "</strong>" +
-        "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
-        "    <span aria-hidden=\"true\">&times;</span>\n" +
-        "  </button>\n" +
-        "</div>");
-}
-
+/**
+ * Gets users from database and loads them in the local array.
+ * @return {void} Returns nothing.
+ */
 function loadUsers() {
     let userDataSelector = $('#idUsersData');
     userDataSelector.empty();
@@ -180,4 +107,106 @@ function loadUsers() {
             })
         }
     });
+}
+
+/**
+ * Loads selected user data from users list.
+ * @return {void} Returns nothing.
+ */
+function loadData(id) {
+    if (formMode !== 'edit') {
+        $('#idEditHeader').html('Modification utilisateur');
+        $('#idBtnSaveEdit').html("Valider les modifications");
+        formMode = 'edit';
+    }
+    let userIndex = users.findIndex((element) => { return parseInt(element.idUser) === id});
+    $("#idUserId").val(users[userIndex]['idUser']);
+    $("#idEmailEditInput").val(users[userIndex]['email']);
+    $("#idPermEdit").val(users[userIndex]['permLevel']);
+}
+
+/**
+ * Validates modified data, prompts user to proceed and if so, calls saveEdit() to save data.
+ * @return {void} Returns nothing.
+ */
+function validateEdit() {
+    $("#editAlert").alert('close');
+    let editedUserId = parseInt($("#idUserId").val());
+    let editedEmail = $("#idEmailEditInput").val();
+    let editedPassword = $("#idPasswordEditInput").val();
+    let editedPerm = $("#idPermEdit").children("option:selected").val();
+    let userIndex = users.findIndex((element) => { return parseInt(element.idUser) === editedUserId});
+
+    if (formMode === 'edit') {
+        if (editedEmail === users[userIndex]['email'] && editedPerm === users[userIndex]['permLevel'] && (!editedPassword || editedPassword.length === 0)) {
+            addAlert("Aucune modification n'a été effectuée !", 'warning');
+        } else {
+            $("#modalSaveEdit").modal();
+            $("#idSaveEdit").on("click", () => {
+                saveEdit(editedUserId, editedEmail, editedPassword, editedPerm, 'edit');
+            });
+        }
+    } else {
+        if (/^\s+$/.test(editedEmail) || /^\s+$/.test(editedPassword)) {
+            addAlert("Vous devez renseigner tous les champs !", 'warning');
+        } else {
+            $("#modalSaveEdit").modal();
+            $("#idSaveEdit").on("click", () => {
+                saveEdit(editedUserId, editedEmail, editedPassword, editedPerm, 'add');
+            });
+        }
+    }
+}
+
+/**
+ * Queries PHP script with Ajax to save new data to database.
+ * @return {void} Returns nothing.
+ */
+function saveEdit(userId, email, password, permlevel, formMode) {
+    $.post({
+        url: 'user-edit.php',
+        data: {userId: userId, email: email, password: password, permlevel: permlevel, formMode: formMode },
+        success: function(html) {
+            if (html === 'ok') {
+                addAlert("Modifications enregistrées !", 'success');
+                loadUsers();
+            } else {
+                addAlert("Erreur lors de la modification !", 'danger');
+            }
+        }
+    });
+
+    // Needed because click event was registered twice.
+    $('#idSaveEdit').unbind();
+}
+
+/**
+ * Deletes currently selected user from database.
+ * @return {void} Returns nothing.
+ */
+function deleteUser() {
+    $("#editAlert").alert('close');
+
+    if ($('#idUserId').val() === "") {
+        addAlert("Suppression impossible, aucun utilisateur sélectionné", "warning");
+    } else {
+        $('#modalSaveEdit').modal();
+        $('#idSaveEdit').on('click', () => {
+            let userId = $("#idUserId").val();
+            saveEdit(userId, null, null, null, 'delete');
+        })
+    }
+}
+
+/**
+ * Creates Bootstrap alert and appends it to edit zone.
+ * @return {void} Returns nothing.
+ */
+function addAlert(text, type) {
+    document.getElementById("usersEdit").insertAdjacentHTML("beforeend", "<div class=\"alert alert-" + type +" alert-dismissible fade show\" role=\"alert\" id=\"editAlert\">\n" +
+        "  <strong>" + text + "</strong>" +
+        "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+        "    <span aria-hidden=\"true\">&times;</span>\n" +
+        "  </button>\n" +
+        "</div>");
 }

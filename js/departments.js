@@ -1,5 +1,13 @@
+/*
+ *  Author      : Laszlo DINDELEUX / I.FA-P2A
+ *  Project     : hrpanel
+ *  Version     : 1.0.0
+ *  File        : departments.js
+ *  Description : Contains required functions for departments page
+ */
+
 let departments = [];
-let formMode = null;
+let formMode = null; // Used to tell PHP script which type of query it needs to do
 
 // Triggered when document finished loading
 $(document).ready(() => {
@@ -19,7 +27,7 @@ function setNewDeptTexts() {
 }
 
 /**
- * Gets departments from database and loads it in the table.
+ * Gets departments from database and loads them in the local array.
  * @return {void} Returns nothing.
  */
 function loadDepartments() {

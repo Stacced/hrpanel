@@ -1,5 +1,5 @@
 <?php
-// Database configuration file
+// Parse database configuration file
 $dbconf = parse_ini_file('dbsettings.ini');
 
 // Filter POST data

@@ -1,8 +1,8 @@
 <?php
-// Database configuration file
+// Parse database configuration file
 $dbconf = parse_ini_file('dbsettings.ini');
 
-// POST data
+// Filter POST data
 $employeeId = filter_input(INPUT_POST, 'employeeId', FILTER_SANITIZE_NUMBER_INT);
 $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
 $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);

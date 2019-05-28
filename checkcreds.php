@@ -2,13 +2,15 @@
 // Start session
 session_start();
 
-// Parse database configuration & define passed params
+// Parse database configuration file
 $dbconf = parse_ini_file('dbsettings.ini');
+
+// Filter POST data
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 $pwd = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 $err = false;
 
-// Provide email to index.php
+// Provide email variable to login form (sticky)
 $_SESSION['emailTry'] = $email;
 
 // Email & password check
@@ -22,6 +24,7 @@ if (!empty($email) || !empty($pwd)) {
     </button>
 </div>
 EOF;
+        $err = true;
     }
 
     if (empty($pwd)) {
@@ -61,9 +64,7 @@ EOF;
     $userData = $pdoStatement->fetch(PDO::FETCH_ASSOC);
 
     // Found the user
-    /*
-     * permLevel : 1 => USER ; 2 => HR MODERATOR ; 3 => HR ADMIN
-     */
+    // permLevel : 1 => USER ; 2 => HR MODERATOR ; 3 => HR ADMIN
     if (!empty($userData) && $pdoStatement->rowCount() === 1) {
         $_SESSION['loggedin'] = true;
         $_SESSION['email'] = $userData['email'];
