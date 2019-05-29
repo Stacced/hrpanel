@@ -55,31 +55,31 @@ if (empty($_SESSION['loggedin'])) {
             <h2 id="idEditHeader">Modification employé</h2>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="idFirstnameInput">Prénom</label>
+                    <label for="idFirstnameInput">Prénom *</label>
                     <input type="text" name="firstnameEdit" class="form-control" id="idFirstnameInput" required>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="idLastnameInput">Nom</label>
+                    <label for="idLastnameInput">Nom *</label>
                     <input type="text" name="lastnameEdit" class="form-control" id="idLastnameInput" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label for="idStreetInput">Rue & numéro</label>
+                    <label for="idStreetInput">Rue & numéro *</label>
                     <input type="text" name="streetEdit" class="form-control" id="idStreetInput">
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="idCityInput">Ville</label>
+                    <label for="idCityInput">Ville *</label>
                     <input type="text" name="cityEdit" class="form-control" id="idCityInput">
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="idPostalCodeInput">Code postal</label>
+                    <label for="idPostalCodeInput">Code postal *</label>
                     <input type="text" name="postalCodeEdit" class="form-control" id="idPostalCodeInput">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="idDeptEdit">Département</label>
+                    <label for="idDeptEdit">Département *</label>
                     <select id="idDeptEdit" class="form-control">
                         <?php
                         foreach ($_SESSION['departments'] as $dept) {

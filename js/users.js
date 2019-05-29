@@ -75,10 +75,10 @@ function loadUsers() {
                         levelName = "Utilisateur";
                         break;
                     case '2':
-                        levelName = "HR Mod";
+                        levelName = "Modérateur RH";
                         break;
                     case '3':
-                        levelName = "HR Admin";
+                        levelName = "Admin RH";
                         break;
                 }
                 userPermLevel.innerHTML = levelName;

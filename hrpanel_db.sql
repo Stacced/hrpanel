@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- Default database user
 CREATE USER IF NOT EXISTS 'adminpanel'@'localhost' IDENTIFIED BY 'adminpanelpassword';
 GRANT ALL PRIVILEGES ON hrpanel.* TO 'adminpanel'@'localhost';
 FLUSH PRIVILEGES;

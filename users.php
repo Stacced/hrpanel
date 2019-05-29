@@ -56,7 +56,7 @@ if (empty($_SESSION['loggedin'])) {
             <h2 id="idEditHeader">Modification utilisateur</h2>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="idEmailEditInput">Adresse email</label>
+                    <label for="idEmailEditInput">Adresse email *</label>
                     <input type="email" name="emailEdit" class="form-control" id="idEmailEditInput" required>
                 </div>
                 <div class="form-group col-md-6">
@@ -66,11 +66,11 @@ if (empty($_SESSION['loggedin'])) {
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="idPermEdit">Niveau de permission</label>
+                    <label for="idPermEdit">Niveau de permission *</label>
                     <select id="idPermEdit" class="form-control">
                         <option value="1">Utilisateur</option>
-                        <option value="2">HR Mod</option>
-                        <option value="3">HR Admin</option>
+                        <option value="2">Modérateur RH</option>
+                        <option value="3">Admin RH</option>
                     </select>
                 </div>
                 <div class="form-group col-md-2">

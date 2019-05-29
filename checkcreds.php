@@ -67,6 +67,7 @@ EOF;
     // permLevel : 1 => USER ; 2 => HR MODERATOR ; 3 => HR ADMIN
     if (!empty($userData) && $pdoStatement->rowCount() === 1) {
         $_SESSION['loggedin'] = true;
+        $_SESSION['userId'] = $userData['idUser'];
         $_SESSION['email'] = $userData['email'];
         $_SESSION['permLevel'] = $userData['permLevel'];
         $_SESSION['lastLogin'] = $userData['lastLogin'];

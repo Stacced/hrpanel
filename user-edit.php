@@ -1,4 +1,7 @@
 <?php
+// Start session
+session_start();
+
 // Parse database configuration file
 $dbconf = parse_ini_file('dbsettings.ini');
 
@@ -30,10 +33,16 @@ try {
             }
             break;
         case 'delete':
+            // Check if selected user is logged-in user
+            if ($userId === $_SESSION['userId']) {
+                echo 'selected user is logged-in user, returning';
+                die();
+            }
             $sql = "DELETE FROM users WHERE idUser = '$userId'";
             break;
         default:
-            // should throw exception or return
+            echo 'unmanaged query type';
+            die();
             break;
     }
 

@@ -51,7 +51,7 @@ if (empty($_SESSION['loggedin'])) {
                 <h2 id="idEditHeader">Modification département</h2>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="idDeptName">Nom du département</label>
+                        <label for="idDeptName">Nom du département *</label>
                         <input type="text" name="deptNameEdit" class="form-control" id="idDeptName" required>
                     </div>
                     <div class="form-group col-md-3">
